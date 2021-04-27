@@ -16,7 +16,7 @@ class PlayerState(Enum):
 
 class AmplifierController(object):
     last_state: PlayerState
-    last_update: datetime
+    last_active: datetime
     switchoff_delay: float
 
     def __init__(
@@ -32,7 +32,7 @@ class AmplifierController(object):
         self.amp_delay = amp_delay
         self.psu_delay = psu_delay
         self.last_state = state
-        self.last_update = datetime.now()
+        self.last_active = datetime.now()
         self._delay = 0.5
         self._thread = None
 
@@ -74,7 +74,7 @@ class AmplifierController(object):
 
         if new_status is None:
             if self.last_state == PlayerState.Idle:
-                delta = timestamp - self.last_update
+                delta = timestamp - self.last_active
                 if (
                     self.amplifier.amp_on
                     and delta.total_seconds() > self.amp_delay
@@ -85,7 +85,7 @@ class AmplifierController(object):
                     self.amplifier.psu_on
                     and delta.total_seconds() > self.psu_delay
                 ):
-                    log.info("Power off power supplu")
+                    log.info("Power off power supply")
                     self.amplifier.psu_on = False
         else:
             if not self.amplifier.psu_on:
@@ -98,5 +98,5 @@ class AmplifierController(object):
                 self.amplifier.amp_on = True
 
             self.last_state = new_status
-
-        self.last_update = timestamp
+            if self.last_state == PlayerState.Active:
+                self.last_active = timestamp

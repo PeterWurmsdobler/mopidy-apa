@@ -27,7 +27,7 @@ class AmplifierHypex(AmplifierBase):
     @property
     def amp_on(self) -> bool:
         # amplifier is on if voltage is low
-        return self.smps_standby.value == 0
+        return self.amplifier_standby.value == 0
 
     @amp_on.setter
     def amp_on(self, newvalue: bool) -> None:

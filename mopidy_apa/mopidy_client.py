@@ -15,11 +15,11 @@ class MopidyClient(pykka.ThreadingActor, core.CoreListener):
     def __init__(self, config, core):
         super().__init__()
         self.core = core
-        self.confg = config
+        self.config = config
         self.status_queue = None
 
     def on_start(self):
-        log.info("MopidyClient start")
+        log.info("Mopidy APA client start")
         self.player_state = PlayerState.Idle
         self.status_queue = queue.Queue()
 
@@ -36,7 +36,7 @@ class MopidyClient(pykka.ThreadingActor, core.CoreListener):
         self.controller.start()
 
     def on_stop(self):
-        log.info("MopidyClient stop")
+        log.info("Mopidy APA client stop")
         self.controller.stop()
         self.controller = None
         self.status_queue.join()

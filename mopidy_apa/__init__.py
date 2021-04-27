@@ -12,8 +12,8 @@ logger = logging.getLogger(__name__)
 
 class Extension(ext.Extension):
 
-    dist_name = "Mopidy-VFD"
-    ext_name = "vfd"
+    dist_name = "Mopidy-APA"
+    ext_name = "apa"
     version = __version__
 
     def get_default_config(self):
